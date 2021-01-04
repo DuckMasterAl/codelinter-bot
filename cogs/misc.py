@@ -52,7 +52,7 @@ class Misc(commands.Cog):
                     token = params[0].replace('access_token=', '')
                     scope = params[1].replace('scope=', '')
                     if 'repo' not in scope.split('%2C'):
-                        embed = discord.Embed(title='Missing Permissions!', description='You didn\'t give us access to Workflow/Repo permissions!\nPlease [re-authorize](https://git.bduck.xyz/new) with the proper permissions.', color=discord.Color.dark_orange())
+                        embed = discord.Embed(title='Missing Permissions!', description='You didn\'t give us access to Repo permissions!\nPlease [re-authorize](https://git.bduck.xyz/new) with the proper permissions.', color=discord.Color.dark_orange())
                         embed.set_thumbnail(url='https://code-linter.elixi.re/i/72qm.png?raw=1')
                         return await ctx.send(embed=embed)
                 else:
@@ -99,6 +99,8 @@ class Misc(commands.Cog):
         for x in data:
             if x['id'] == ctx.author.id:
                 x['token'] = token
+                with open('/home/container/CodeLint/data.json', 'w') as f:
+                    json.dump(data, f, indent=2)
                 return await msg.edit(embed=embed)
         data.append({"id": ctx.author.id, "token": token, 'donator': False, 'repo': []})
         with open('/home/container/CodeLint/data.json', 'w') as f:
