@@ -36,7 +36,7 @@ class Misc(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    # @commands.cooldown(1, 2.5, BucketType.user)
+    @commands.cooldown(1, 30.0, BucketType.user)
     async def link(self, ctx, *, code):
         """ Link your Github Account! """
         await ctx.trigger_typing()
@@ -108,20 +108,28 @@ class Misc(commands.Cog):
         await msg.edit(embed=embed)
 
     @commands.command()
+    @commands.cooldown(1, 10.0, BucketType.user)
     async def repo(self, ctx, repo):
         """ Start Watching a Repository for Github Action Checks """
         await ctx.trigger_typing()
         File = open('/home/container/CodeLint/data.json').read()
         data = json.loads(File)
+        repo_list = []
         for x in data:
             if x['id'] == ctx.author.id:
                 for a in x['repo']:
-                    if a['name'] == str(repo):
+                    if a['name'].lower() == repo.lower():
                         x['repo'].remove(a)
                         with open('/home/container/CodeLint/data.json', 'w') as f:
                             json.dump(data, f, indent=2)
                         embed = discord.Embed(title='No Longer Watching Repository', description=f"No longer watching **{repo}** for Github Action Checks!", color=discord.Color.red(), url=f'https://github.com/{repo}')
                         return await ctx.send(embed=embed)
+                    elif repo.lower() == 'list':
+                        repo_list.append(discord.utils.escape_markdown(a['name']))
+                if repo.lower() == 'list':
+                    repo_msg = '\n> '.join(repo_list)
+                    embed = discord.Embed(title=f'You\'re Watching {len(repo_list)} Repositories!', description=f'\n> {repo_msg}', color=discord.Color.blue())
+                    return await ctx.send(embed=embed)
                 async with aiohttp.ClientSession() as session:
                     async with session.get(f'https://api.github.com/repos/{repo}/actions/runs', headers={"Authorization": f"token {x['token']}"}) as r:
                         js = await r.json()
@@ -142,14 +150,20 @@ class Misc(commands.Cog):
                         else:
                             return await github_offline(self, ctx, r.status)
 
-    @commands.command()
+    @commands.command(aliases=['privacypolicy'])
     async def privacy(self, ctx):
         """ Read our Privacy Policy! """
-        await ctx.send(f'You can view {self.bot.user.name}\'s Privacy Policy at https://git.bduck.xyz/privacy')
+        await ctx.send(f':shield: You can view {self.bot.user.name}\'s Privacy Policy at https://git.bduck.xyz/privacy')
 
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
-        await ctx.send(f'cool an error - {error}')
+    @commands.command()
+    async def support(self, ctx):
+        """ Join the Support Server! """
+        await ctx.send(f'<:join:659881573012865084> You can join {self.bot.user.name}\'s Support Server at https://discord.gg/FZHUWdF8HX')
+
+    @commands.command()
+    async def invite(self, ctx):
+        """ Invite Code Linter! """
+        await ctx.send(f'<a:atada:794605079616946197> You can invite {self.bot.user.name} at <https://discord.com/api/oauth2/authorize?client_id=789206454929719347&permissions=347200&scope=bot>')
 
 def setup(bot):
     bot.add_cog(Misc(bot))

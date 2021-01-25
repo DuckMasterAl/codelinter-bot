@@ -5,7 +5,7 @@ Client = discord.Client()
 initial_extensions = ['cogs.misc', 'cogs.tasks', 'jishaku']
 
 client = commands.Bot(
-                    command_prefix=commands.when_mentioned_or(('cl!', 'Cl!', 'cL!', 'CL!')),
+                    command_prefix=commands.when_mentioned_or('cl!'),
                     status=discord.Status.idle,
                     activity=discord.Activity(type=discord.ActivityType.watching, name='Github Repositories | cl!help'),
                     description='Hello World!',
