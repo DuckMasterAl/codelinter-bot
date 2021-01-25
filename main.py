@@ -8,7 +8,7 @@ client = commands.Bot(
                     command_prefix=commands.when_mentioned_or('cl!'),
                     status=discord.Status.idle,
                     activity=discord.Activity(type=discord.ActivityType.watching, name='Github Repositories | cl!help'),
-                    description='Hello World!',
+                    description='Hello! I watch your Github Repositories for Github Action Checks!\nLearn More at https://git.bduck.xyz',
                     case_insensitive=True,
                     allowed_mentions=discord.AllowedMentions.none(),
                     reconnect=True,

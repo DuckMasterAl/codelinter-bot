@@ -102,7 +102,7 @@ class Misc(commands.Cog):
                 with open('/home/container/CodeLint/data.json', 'w') as f:
                     json.dump(data, f, indent=2)
                 return await msg.edit(embed=embed)
-        data.append({"id": ctx.author.id, "token": token, 'donator': False, 'repo': []})
+        data.append({"id": ctx.author.id, "token": token, 'bonus': False, 'repo': []})
         with open('/home/container/CodeLint/data.json', 'w') as f:
             json.dump(data, f, indent=2)
         await msg.edit(embed=embed)
@@ -130,6 +130,24 @@ class Misc(commands.Cog):
                     repo_msg = '\n> '.join(repo_list)
                     embed = discord.Embed(title=f'You\'re Watching {len(repo_list)} Repositories!', description=f'\n> {repo_msg}', color=discord.Color.blue())
                     return await ctx.send(embed=embed)
+
+                hangout_guild = self.bot.get_guild(739854607215230996)
+                try:
+                    member = await hangout_guild.fetch_member(ctx.author.id)
+                except discord.NotFound:
+                    member = None
+                if ctx.author.id == self.bot.owner_id:
+                    pass
+                elif len(x['repo']) => 3 and member is None:
+                    embed = discord.Embed(title=f'Too Many Repositories', description=f'In order to prevent spam, you can only watch 3 repositories at a time!\nYou can [join our support server](https://discord.gg/FZHUWdF8HX) to get this limit extended to 5 repositories.', color=discord.Color.red())
+                    return await ctx.send(embed=embed)
+                elif len(x['repo']) => 5 and member is not None and x['bonus'] is not True:
+                    embed = discord.Embed(title=f'Too Many Repositories', description=f'You are at the 5 repository limit. Contact a developer if you would like to watch more repositories.', color=discord.Color.red())
+                    return await ctx.send(embed=embed)
+                elif len(x['repo']) => 10 and x['bonus'] is True:
+                    embed = discord.Embed(title=f'Too Many Repositories', description=f'You are at the 10 repository limit.', color=discord.Color.red())
+                    return await ctx.send(embed=embed)
+
                 async with aiohttp.ClientSession() as session:
                     async with session.get(f'https://api.github.com/repos/{repo}/actions/runs', headers={"Authorization": f"token {x['token']}"}) as r:
                         js = await r.json()

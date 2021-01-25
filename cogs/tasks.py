@@ -52,7 +52,7 @@ class Tasks(commands.Cog):
                             json_update = True
                             logging_information.append(f'Deleted {a["name"]} (404)')
                         else:
-                            embed = discord.Embed(title='Github Down', description=f"Task: Repo Message Task\n**Status Code: {r.status}**\nUser: {x['id']}\nRepo: {a['name']}")
+                            embed = discord.Embed(title='Github Down', description=f"Task: Repo Message Task\n**Status Code: {r.status}**\nUser: {x['id']}\nRepo: {a['name']}", color=discord.Color.red())
                             guild = self.bot.get_guild(739854607215230996)
                             channel = guild.get_channel(795395718998523925)
                             m = await channel.send(embed=embed)
