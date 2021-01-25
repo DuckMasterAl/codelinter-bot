@@ -41,7 +41,7 @@ class Misc(commands.Cog):
         """ Link your Github Account! """
         await ctx.trigger_typing()
         async with aiohttp.ClientSession() as session:
-            async with session.post(f'https://github.com/login/oauth/access_token?client_id=eb8d5d1d67f9e842e89b&client_secret={tokens.github}&code={code}') as r:
+            async with session.post(f'https://github.com/login/oauth/access_token?client_id=783dc01178c06c28994b&client_secret={tokens.github}&code={code}') as r:
                 if r.status == 200:
                     text = await r.text()
                     if text.startswith("error=bad_verification_code"):
@@ -138,13 +138,13 @@ class Misc(commands.Cog):
                     member = None
                 if ctx.author.id == self.bot.owner_id:
                     pass
-                elif len(x['repo']) => 3 and member is None:
+                elif len(x['repo']) >= 3 and member is None:
                     embed = discord.Embed(title=f'Too Many Repositories', description=f'In order to prevent spam, you can only watch 3 repositories at a time!\nYou can [join our support server](https://discord.gg/FZHUWdF8HX) to get this limit extended to 5 repositories.', color=discord.Color.red())
                     return await ctx.send(embed=embed)
-                elif len(x['repo']) => 5 and member is not None and x['bonus'] is not True:
+                elif len(x['repo']) >= 5 and member is not None and x['bonus'] is not True:
                     embed = discord.Embed(title=f'Too Many Repositories', description=f'You are at the 5 repository limit. Contact a developer if you would like to watch more repositories.', color=discord.Color.red())
                     return await ctx.send(embed=embed)
-                elif len(x['repo']) => 10 and x['bonus'] is True:
+                elif len(x['repo']) >= 10 and x['bonus'] is True:
                     embed = discord.Embed(title=f'Too Many Repositories', description=f'You are at the 10 repository limit.', color=discord.Color.red())
                     return await ctx.send(embed=embed)
 
