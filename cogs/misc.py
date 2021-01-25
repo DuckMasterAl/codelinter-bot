@@ -169,16 +169,19 @@ class Misc(commands.Cog):
                             return await github_offline(self, ctx, r.status)
 
     @commands.command(aliases=['privacypolicy'])
+    @commands.cooldown(1, 2.5, BucketType.user)
     async def privacy(self, ctx):
         """ Read our Privacy Policy! """
         await ctx.send(f':shield: You can view {self.bot.user.name}\'s Privacy Policy at https://git.bduck.xyz/privacy')
 
     @commands.command()
+    @commands.cooldown(1, 2.5, BucketType.user)
     async def support(self, ctx):
         """ Join the Support Server! """
         await ctx.send(f'<:join:659881573012865084> You can join {self.bot.user.name}\'s Support Server at https://discord.gg/FZHUWdF8HX')
 
     @commands.command()
+    @commands.cooldown(1, 2.5, BucketType.user)
     async def invite(self, ctx):
         """ Invite Code Linter! """
         await ctx.send(f'<a:atada:794605079616946197> You can invite {self.bot.user.name} at <https://discord.com/api/oauth2/authorize?client_id=789206454929719347&permissions=347200&scope=bot>')
